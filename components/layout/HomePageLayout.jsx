@@ -1,15 +1,13 @@
 import Footer from "../Footer";
 import Navbar from "../Navbar";
 
-export default function HomePageLayout({children}){
-    return(
-       <>
-        <Navbar/>
+export default function HomePageLayout({ children }) {
+  return (
+    <>
+      <Navbar />
 
-<div className="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center"> 
-{children}
-</div>
-<Footer/>
-       </>
-    )
+      <div className="p-5">{children}</div>
+      <Footer />
+    </>
+  );
 }

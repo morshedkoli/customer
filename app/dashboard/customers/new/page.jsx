@@ -1,11 +1,11 @@
 import DashboardLayout from "@/components/layout/DashboardLayout";
-import ServiceForm from "@/components/ServiceForm";
+import RegisterForm from "@/components/RegisterForm";
 
 export default function Page() {
   return (
     <DashboardLayout>
       <div className="container mx-auto">
-        <ServiceForm />
+        <RegisterForm />
       </div>
     </DashboardLayout>
   );

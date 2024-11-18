@@ -1,0 +1,86 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Enum for Service Status
+enum Status {
+  Agreement
+  Submitted
+  Finger_Done
+  Police_Report_Done
+  BackEnd_Verification_Done
+  Printing
+  Shipped
+  Ready_For_Delivery
+  Delivered
+}
+
+model User {
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  name             String
+  address          String
+  number           String
+  email            String     @unique
+  password         String
+  otp              String?
+  subscriptionTime DateTime
+  activationDate   DateTime
+  customers        Customer[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+}
+
+// Customer Table
+model Customer {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  address     String
+  phone      String
+  balance     Float
+  services    Service[]
+  paidHistory PaidHistory[]
+  userId      String 
+  user        User          @relation(fields: [userId], references: [id])
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model ServiceName {
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  services  Service[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Service {
+  id             String        @id @default(auto()) @map("_id") @db.ObjectId
+  serviceNameId  String
+  serviceName    ServiceName   @relation(fields: [serviceNameId], references: [id])
+  cost           Float
+  customerId      String
+  customer        Customer          @relation(fields: [customerId], references: [id])
+  deliveryDate   DateTime
+  status         Status
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model PaidHistory {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  amount     Float
+  customerId String
+  customer   Customer  @relation(fields: [customerId], references: [id])
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
