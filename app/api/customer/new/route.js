@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 
 export async function POST(req) {
   try {
-    const { name, phone, address, balance } = await req.json();
+    const { name, phone, address, balance, userId } = await req.json();
 
     // Server-side validation
     if (!name || !phone || !address || isNaN(balance)) {
@@ -22,7 +22,7 @@ export async function POST(req) {
         phone,
         address,
         balance: parseFloat(balance),
-        userId: "asdjfakdsjf",
+        userId,
       },
     });
 

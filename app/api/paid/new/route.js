@@ -5,11 +5,10 @@ const prisma = new PrismaClient();
 
 export async function POST(req) {
   try {
-    const { serviceNameId, cost, customerId, deliveryDate, status } =
-      await req.json();
+    const { amount, customerId, date } = await req.json();
 
     // Server-side validation
-    if (!serviceNameId || !cost || !customerId || !deliveryDate || !status) {
+    if (!date || !customerId || isNaN(amount)) {
       return NextResponse.json(
         { message: "All fields are required and balance must be a number" },
         { status: 400 }
@@ -17,18 +16,16 @@ export async function POST(req) {
     }
 
     // // Save user to MongoDB using Prisma
-    const newService = await prisma.service.create({
+    const newPaid = await prisma.paidHistory.create({
       data: {
-        serviceNameId,
-        cost,
+        date,
+        amount: parseFloat(amount),
         customerId,
-        deliveryDate,
-        status,
       },
     });
 
     return NextResponse.json(
-      { message: "Service registered successfully!", service: newService },
+      { message: "paid registered successfully!", paid: newPaid },
       { status: 201 }
     );
   } catch (error) {

@@ -5,11 +5,10 @@ const prisma = new PrismaClient();
 
 export async function POST(req) {
   try {
-    const { serviceNameId, cost, customerId, deliveryDate, status } =
-      await req.json();
+    const { name } = await req.json();
 
     // Server-side validation
-    if (!serviceNameId || !cost || !customerId || !deliveryDate || !status) {
+    if (!name) {
       return NextResponse.json(
         { message: "All fields are required and balance must be a number" },
         { status: 400 }
@@ -17,22 +16,18 @@ export async function POST(req) {
     }
 
     // // Save user to MongoDB using Prisma
-    const newCustomer = await prisma.customer.create({
+    const newService = await prisma.serviceName.create({
       data: {
-        serviceNameId,
-        cost,
-        customerId,
-        deliveryDate,
-        status,
+        name,
       },
     });
 
     return NextResponse.json(
-      { message: "Service registered successfully!", customer: newCustomer },
+      { message: "Add new Service successfully!", service: newService },
       { status: 201 }
     );
   } catch (error) {
-    console.error("Registration Error:", error);
+    console.error("Add Error:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 }

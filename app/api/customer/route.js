@@ -1,25 +1,25 @@
-import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import { NextResponse } from "next/server";
 
 const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    // Fetch all users
-    const users = await prisma.user.findMany({
+    const customers = await prisma.customer.findMany({
       include: {
-        customers: true, // Include related customers
+        services: true, // Include related services
+        paidHistories: true, // Include related paid histories
+        user: { select: { id: true, name: true } }, // Include user details
       },
     });
+    console.log(customers);
 
-    return NextResponse.json(users);
+    return NextResponse.json(customers);
   } catch (error) {
-    console.error("Error fetching users:", error);
+    console.log("hello", error);
     return NextResponse.json(
-      { error: "Failed to fetch users" },
+      { message: "Failed to fetch customers" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
