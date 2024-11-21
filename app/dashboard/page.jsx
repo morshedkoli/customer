@@ -39,9 +39,7 @@ export default function Page() {
           <div className="w-2/3 p-4">
             <JobsTable />
           </div>
-          <div className="w-1/3 p-4">
-            <JobsTable />
-          </div>
+          <div className="w-1/3 p-4">hello for this time</div>
         </div>
       </div>
     </DashboardLayout>
