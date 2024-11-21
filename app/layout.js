@@ -1,7 +1,6 @@
 import Navbar from "@/components/Navbar";
 import "./globals.css";
-
-
+import { SidebarProvider } from "@/components/ui/sidebar";
 
 export const metadata = {
   title: "Create Next App",
@@ -11,17 +10,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-    
-      <body   
-      >  
-      
-
-      
-        {children}
-      
-     
+      <body>
+        <SidebarProvider>{children}</SidebarProvider>
       </body>
-      
     </html>
   );
 }

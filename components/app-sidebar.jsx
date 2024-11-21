@@ -1,44 +1,64 @@
-import { Calendar, Home, Inbox, Search, Settings } from "lucide-react";
+import {
+  Calendar,
+  Home,
+  Inbox,
+  FilePlus,
+  Search,
+  Settings,
+  Trello,
+  ListChecks,
+  Users,
+  Waypoints,
+  UserPen,
+  LogOut,
+  LayoutDashboard,
+} from "lucide-react";
 
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
+import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import UserItem from "./athenticated/UserItem";
 
 // Menu items.
 const items = [
   {
-    title: "Home",
+    title: "Dashboard",
     url: "/dashboard",
-    icon: Home,
+    icon: LayoutDashboard,
   },
   {
     title: "New Work",
     url: "/dashboard/works/new",
-    icon: Inbox,
+    icon: FilePlus,
   },
   {
     title: "Works",
     url: "/dashboard/works",
-    icon: Calendar,
+    icon: ListChecks,
   },
 
   {
     title: "Customers",
     url: "/dashboard/customers",
-    icon: Search,
+    icon: Users,
   },
 
   {
     title: "Services",
     url: "/dashboard/service",
-    icon: Search,
+    icon: Waypoints,
   },
   {
     title: "Settings",
@@ -49,10 +69,13 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
+      <SidebarHeader>
+        <Trello /> logo
+      </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
+          <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
@@ -69,6 +92,24 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
+      <SidebarFooter>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <UserItem />
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <Button variant="destructive" className="w-full ">
+              <SidebarMenuButton asChild>
+                <a href="#">
+                  <LogOut />
+                  <span>Logout</span>
+                </a>
+              </SidebarMenuButton>
+            </Button>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarFooter>
     </Sidebar>
   );
 }

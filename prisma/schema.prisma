@@ -73,6 +73,9 @@ model Service {
   customer     Customer @relation(fields: [customerId], references: [id])
   deliveryDate DateTime
   status       Status
+  name String
+      birthDate DateTime
+      ref String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 }
