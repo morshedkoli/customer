@@ -13,7 +13,7 @@ import { User2Icon } from "lucide-react";
 
 export default function SingleState({ title, description, value, icon }) {
   return (
-    <Card className="w-[350px]">
+    <Card className="lg:w-[350px]">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

@@ -3,11 +3,15 @@ import Navbar from "../Navbar";
 
 export default function HomePageLayout({ children }) {
   return (
-    <>
+    <div className="w-full h-screen relative">
       <Navbar />
 
-      <div className="p-5">{children}</div>
-      <Footer />
-    </>
+      {children}
+      <div className="flex justify-center absolute bottom-1 w-full ">
+        <div className="container">
+          <Footer />
+        </div>
+      </div>
+    </div>
   );
 }

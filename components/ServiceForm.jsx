@@ -15,7 +15,7 @@ export default function ServiceForm() {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [name]: name === "balance" ? parseFloat(value) || 0 : value,
+      [name]: value,
     }));
   };
 
@@ -34,7 +34,7 @@ export default function ServiceForm() {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("/api/service/new", {
+      const response = await fetch("/api/serviceName/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -58,12 +58,12 @@ export default function ServiceForm() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-5">Register</h2>
+      <h2 className="text-2xl font-bold mb-5">New Service Add</h2>
       {successMessage && <p className="text-green-600">{successMessage}</p>}
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label>Name</label>
+          <label>Service Name</label>
           <input
             type="text"
             name="name"
@@ -78,7 +78,7 @@ export default function ServiceForm() {
           type="submit"
           className="w-full bg-blue-600 text-white p-2 rounded"
         >
-          Register
+          Add Service
         </button>
       </form>
     </div>

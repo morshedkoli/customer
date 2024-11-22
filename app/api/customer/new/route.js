@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 export async function POST(req) {
   try {
-    const { name, phone, address, balance, userId } = await req.json();
+    const { name, phone, address, balance } = await req.json();
 
     // Server-side validation
     if (!name || !phone || !address || isNaN(balance)) {
       return NextResponse.json(
-        { message: "All fields are required and balance must be a number" },
+        { message: "All fields are required " },
         { status: 400 }
       );
     }
@@ -22,7 +22,7 @@ export async function POST(req) {
         phone,
         address,
         balance: parseFloat(balance),
-        userId,
+        userId: "673cda4fb638410a586b4d02",
       },
     });
 
@@ -31,7 +31,6 @@ export async function POST(req) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Registration Error:", error);
     return NextResponse.json(
       { message: "Something went wrong" },
       { status: 500 }

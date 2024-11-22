@@ -10,23 +10,19 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 
-export async function JobsTable() {
+export async function CompleteTable() {
   let data = await fetch("http://localhost:3000/api/service");
   let jobs = await data.json();
   return (
     <div className="p-10 border rounded-md">
-      <h2 className="text-3xl font-bold mb-4">Pending Jobs</h2>
+      <h2 className="text-3xl font-bold mb-4">Complete Jobs</h2>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[150px]">Job Name</TableHead>
             <TableHead>Name</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Birth Date</TableHead>
-            <TableHead>Reference</TableHead>
-            <TableHead>Dalivery</TableHead>
             <TableHead>Customer</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -37,15 +33,7 @@ export async function JobsTable() {
               </TableCell>
               <TableCell>{job?.name}</TableCell>
               <TableCell>{job?.status}</TableCell>
-              <TableCell>
-                {format(new Date(job.birthDate), "dd-MM-yyyy")}
-              </TableCell>
-              <TableCell>{job?.ref}</TableCell>
-              <TableCell>
-                {format(new Date(job.deliveryDate), "dd-MM-yyyy")}
-              </TableCell>
               <TableCell>{job?.customer.name}</TableCell>
-              <TableCell className="text-right">{job?.cost}</TableCell>
             </TableRow>
           ))}
         </TableBody>

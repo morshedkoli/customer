@@ -15,7 +15,7 @@ import {
 
 export function SingleSite() {
   return (
-    <Card className="w-30">
+    <Card className="w-[300px]">
       <CardHeader>
         <CardTitle>Card Title</CardTitle>
         <CardDescription>Card Description</CardDescription>

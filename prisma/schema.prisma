@@ -25,14 +25,15 @@ enum Status {
 // User Table
 model User {
   id               String     @id @default(auto()) @map("_id") @db.ObjectId
-  name             String
-  address          String
-  number           String
+
   email            String     @unique
-  password         String
-  otp              String     @default("0")
-  subscriptionTime DateTime
-  activationDate   DateTime
+  password        String
+  name            String?  // Optional field
+  address         String?  // Optional field
+  number          String?  // Optional field
+  subscriptionTime DateTime? // Optional field
+  activationDate  DateTime? // Optional field
+    otp              String     @default("0")
   active           Boolean    @default(true)
   customers        Customer[] @relation
   createdAt        DateTime   @default(now())

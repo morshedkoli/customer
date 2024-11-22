@@ -66,7 +66,7 @@ export default function RegisterForm() {
 
   return (
     <div className="max-w-md mx-auto mt-10">
-      <h2 className="text-2xl font-bold mb-5">Register</h2>
+      <h2 className="text-2xl font-bold mb-5">Register Customer</h2>
       {successMessage && <p className="text-green-600">{successMessage}</p>}
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
       <form onSubmit={handleSubmit} className="space-y-4">

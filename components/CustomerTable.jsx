@@ -36,29 +36,31 @@ export default function CustomerTable() {
       <table className="min-w-full border-collapse border border-gray-200">
         <thead>
           <tr>
-            <th className="border p-2">ID</th>
             <th className="border p-2">Name</th>
             <th className="border p-2">Address</th>
             <th className="border p-2">Phone Number</th>
-            <th className="border p-2">Email</th>
-            <th className="border p-2">Subscription Time</th>
-            <th className="border p-2">Activation Date</th>
+            <th className="border p-2">Total Services</th>
+            <th className="border p-2">Total Payment Time</th>
+            <th className="border p-2">Total Cost Of Services</th>
+            <th className="border p-2">Total Paid Amount</th>
+            <th className="border p-2">Due Balance</th>
           </tr>
         </thead>
         <tbody>
           {users.map((user) => (
             <tr key={user.id} className="text-center">
-              <td className="border p-2">{user.id}</td>
               <td className="border p-2">{user.name}</td>
               <td className="border p-2">{user.address}</td>
-              <td className="border p-2">{user.number}</td>
-              <td className="border p-2">{user.email}</td>
+              <td className="border p-2">{user.phone}</td>
+              <td className="border p-2">{user.services.length}</td>
+              <td className="border p-2">{user.paidHistories.length}</td>
               <td className="border p-2">
-                {new Date(user.subscriptionTime).toLocaleDateString()}
+                {user.services.reduce((sum, service) => sum + service.cost, 0)}
               </td>
               <td className="border p-2">
-                {new Date(user.activationDate).toLocaleDateString()}
+                {user.paidHistories.reduce((sum, paid) => sum + paid.amount, 0)}
               </td>
+              <td className="border p-2">{user.balance}</td>
             </tr>
           ))}
         </tbody>

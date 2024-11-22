@@ -11,7 +11,7 @@ import {
 
 function Statistics() {
   return (
-    <div className=" px-20  w-full flex flex-wrap justify-between">
+    <div className="flex flex-col md:flex-row justify-between gap-5 mb-5 px-10">
       <SingleState
         title="Pending Jobs"
         value="100"

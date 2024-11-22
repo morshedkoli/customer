@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 
-export async function JobsTable() {
+export async function ServiceTable() {
   let data = await fetch("http://localhost:3000/api/service");
   let jobs = await data.json();
   return (
     <div className="p-10 border rounded-md">
-      <h2 className="text-3xl font-bold mb-4">Pending Jobs</h2>
+      <h2 className="text-3xl font-bold mb-4">All Jobs</h2>
       <Table>
         <TableHeader>
           <TableRow>

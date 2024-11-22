@@ -6,15 +6,14 @@ const prisma = new PrismaClient();
 export async function GET() {
   try {
     // Fetch all users
-    const users = await prisma.serviceName.findMany({
-      orderBy: [
-        {
-          createdAt: "desc",
-        },
-      ],
+    const services = await prisma.service.findMany({
+      include: {
+        customer: true,
+        serviceName: true,
+      },
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json(services);
   } catch (error) {
     console.error("Error fetching users:", error);
     return NextResponse.json(
