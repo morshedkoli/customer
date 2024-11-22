@@ -70,6 +70,7 @@ function RegisterCom() {
           setSuccessMessage(data.message);
           setErrorMessage("");
           setFormData({ email: "", password: "", cpassword: "", terms: false });
+          redirect("/auth/login");
         } else {
           setErrorMessage(data.message);
           setSuccessMessage("");
