@@ -13,10 +13,10 @@ export default function CustomerTable() {
         const response = await fetch("/api/customer");
         const data = await response.json();
 
-        if (response.ok) {
+        if (data && response.ok) {
           setUsers(data);
         } else {
-          setError(data.error || "Failed to fetch users");
+          setError(data?.error || "Failed to fetch users");
         }
       } catch (err) {
         setError("Something went wrong");
