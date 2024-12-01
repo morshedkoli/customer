@@ -47,7 +47,7 @@ export default function CustomerTable() {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {users?.map((user) => (
             <tr key={user.id} className="text-center">
               <td className="border p-2">{user.name}</td>
               <td className="border p-2">{user.address}</td>
