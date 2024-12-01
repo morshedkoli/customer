@@ -20,9 +20,6 @@ function LoginCom() {
     });
 
     if (res.ok) {
-      const data = await res.json();
-
-      sessionStorage.setItem("userId", data.user.id);
       router.push("/dashboard");
     } else {
       alert("Invalid credentials");
