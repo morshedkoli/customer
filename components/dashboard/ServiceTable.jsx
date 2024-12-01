@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -30,7 +28,7 @@ export async function ServiceTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {jobs.map((job) => (
+          {jobs?.map((job) => (
             <TableRow key={job.id}>
               <TableCell className="font-medium">
                 {job?.serviceName.name}
