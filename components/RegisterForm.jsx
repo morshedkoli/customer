@@ -50,12 +50,12 @@ export default function RegisterForm() {
 
       const data = await response.json();
 
-      if (response.ok) {
-        setSuccessMessage(data.message);
+      if (response?.ok) {
+        setSuccessMessage(data.message || "error");
         setErrorMessage("");
         setFormData({ name: "", phone: "", address: "", balance: 0 });
       } else {
-        setErrorMessage(data.message);
+        setErrorMessage(data.message || "error");
         setSuccessMessage("");
       }
     } catch (error) {

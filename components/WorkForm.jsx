@@ -14,7 +14,6 @@ export default function WorkForm() {
     ref: "",
   });
 
-  console.log(formData);
   const [isLoading, setLoading] = useState(true);
 
   const [serviceNames, setServiceNames] = useState();
