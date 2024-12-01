@@ -1,19 +1,32 @@
 "use client";
+import { useRouter } from "next/navigation";
 
 import { useState } from "react";
 
 function LoginCom() {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Simulate API call
-    console.log("Form Data Submitted:", formData);
+
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+
+      sessionStorage.setItem("userId", data.user.id);
+      router.push("/dashboard");
+    } else {
+      alert("Invalid credentials");
+    }
   };
 
   return (
@@ -32,15 +45,15 @@ function LoginCom() {
             <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
               <div>
                 <label className="text-gray-800 text-sm mb-2 block">
-                  User name
+                  Email Address
                 </label>
                 <div className="relative flex items-center">
                   <input
-                    name="username"
-                    type="text"
+                    name="email"
+                    type="email"
                     required
-                    value={formData.username}
-                    onChange={handleInputChange}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
                     placeholder="Enter user name"
                   />
@@ -55,8 +68,8 @@ function LoginCom() {
                     name="password"
                     type="password"
                     required
-                    value={formData.password}
-                    onChange={handleInputChange}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
                     className="w-full text-gray-800 text-sm border border-gray-300 px-4 py-3 rounded-md outline-blue-600"
                     placeholder="Enter password"
                   />

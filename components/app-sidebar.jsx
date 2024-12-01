@@ -30,6 +30,7 @@ import {
 import { Button } from "./ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import UserItem from "./athenticated/UserItem";
+import LogoutButton from "./athenticated/LogoutButton";
 
 // Menu items.
 const items = [
@@ -99,11 +100,11 @@ export function AppSidebar() {
             <UserItem />
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Button variant="destructive" className="w-full ">
+            <Button variant="destructive" className="w-full" asChild>
               <SidebarMenuButton asChild>
                 <a href="#">
                   <LogOut />
-                  <span>Logout</span>
+                  <LogoutButton />
                 </a>
               </SidebarMenuButton>
             </Button>

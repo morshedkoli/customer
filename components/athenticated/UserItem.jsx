@@ -1,6 +1,8 @@
-import React from "react";
+export default async function UserItem() {
+  let data = await fetch("http://localhost:3000/api/user");
+  let user = await data.json();
+  console.log(user);
 
-export default function UserItem() {
   return (
     <div className="flex items-center justify-center gap-2 border rounded-[16px] p-2">
       <div className="avatar rounded-full min-h-10 min-w-10 bg-emerald-500 text-white font-bold flex items-center justify-center">

@@ -1,9 +1,11 @@
 "use client";
 
-import { redirect } from "next/navigation";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 function RegisterCom() {
+  const router = useRouter();
+  const [isHydrated, setIsHydrated] = useState(false); // Ensures client-side rendering
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -13,6 +15,11 @@ function RegisterCom() {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({});
+
+  // Ensure hydration
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -67,10 +74,11 @@ function RegisterCom() {
         const data = await response.json();
 
         if (response.ok) {
+          alert("Register Successfull");
           setSuccessMessage(data.message);
           setErrorMessage("");
           setFormData({ email: "", password: "", cpassword: "", terms: false });
-          redirect("/auth/login");
+          router.push("/auth/login");
         } else {
           setErrorMessage(data.message);
           setSuccessMessage("");
@@ -91,8 +99,12 @@ function RegisterCom() {
               Mk Work Management
             </h2>
           </a>
-          {successMessage && <p className="text-green-600">{successMessage}</p>}
-          {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+          {isHydrated && successMessage && (
+            <p className="text-green-600">{successMessage}</p>
+          )}
+          {isHydrated && errorMessage && (
+            <p className="text-red-600">{errorMessage}</p>
+          )}
         </div>
         <form onSubmit={handleSubmit}>
           <div className="space-y-6">
@@ -165,7 +177,7 @@ function RegisterCom() {
               >
                 I accept the{" "}
                 <a
-                  href="javascript:void(0);"
+                  href="/terms-and-conditions"
                   className="text-blue-600 font-semibold hover:underline ml-1"
                 >
                   Terms and Conditions

@@ -3,23 +3,34 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-export async function GET() {
+export async function GET(request) {
   try {
-    // Fetch all users
-    const users = await prisma.user.findMany({
-      include: {
-        customers: true, // Include related customers
-      },
+    // Extract email from headers
+    const email = request.headers.get("email");
+    console.log("headers", request.headers);
+    if (!email) {
+      return NextResponse.json(
+        { error: "Email not provided in headers" },
+        { status: 400 }
+      );
+    }
+
+    // Query user from the database using the extracted email
+    const user = await prisma.user.findUnique({
+      where: { email },
     });
 
-    return NextResponse.json(users);
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Return the user data
+    return NextResponse.json({ user });
   } catch (error) {
-    console.error("Error fetching users:", error);
+    console.error("Error fetching user:", error.message);
     return NextResponse.json(
-      { error: "Failed to fetch users" },
+      { error: "Internal server error" },
       { status: 500 }
     );
-  } finally {
-    await prisma.$disconnect();
   }
 }
