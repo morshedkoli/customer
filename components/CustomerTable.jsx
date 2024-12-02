@@ -12,16 +12,17 @@ export default function CustomerTable() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(`${process.env.HOST_URL}/api/customer`);
-      const data = await response.json();
-
-      if (response.ok && data) {
-        setUsers(data);
-      } else {
-        setError(data?.error || "Failed to fetch users.");
+      const response = await fetch(`/api/customer`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch users.");
       }
+      const data = await response.json();
+      setUsers(data);
     } catch (err) {
-      setError("Unable to connect to the server. Please try again later.");
+      setError(
+        err.message ||
+          "Unable to connect to the server. Please try again later."
+      );
     } finally {
       setLoading(false);
     }
