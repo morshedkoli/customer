@@ -42,7 +42,7 @@ export default function RegisterForm() {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("/api/customer/new", {
+      const response = await fetch(`${process.env.HOST_URL}/api/customer/new`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

@@ -12,7 +12,7 @@ export default function CustomerTable() {
       setLoading(true);
       setError("");
 
-      const response = await fetch("/api/customer");
+      const response = await fetch(`${process.env.HOST_URL}/api/customer`);
       const data = await response.json();
 
       if (response.ok && data) {

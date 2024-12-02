@@ -34,11 +34,14 @@ export default function ServiceForm() {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("/api/serviceName/new", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${process.env.HOST_URL}/api/serviceName/new`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(formData),
+        }
+      );
 
       const data = await response.json();
 

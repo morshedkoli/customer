@@ -65,7 +65,7 @@ function RegisterCom() {
     e.preventDefault();
     if (validate()) {
       try {
-        const response = await fetch("/api/user/new", {
+        const response = await fetch(`${process.env.HOST_URL}/api/user/new`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(formData),

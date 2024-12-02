@@ -9,7 +9,7 @@ import {
 import { format } from "date-fns";
 
 export async function ServiceTable() {
-  let data = await fetch("http://localhost:3000/api/service");
+  let data = await fetch(`${process.env.HOST_URL}/api/service`);
   let jobs = await data.json();
   return (
     <div className="p-10 border rounded-md">

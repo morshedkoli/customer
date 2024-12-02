@@ -20,7 +20,7 @@ export default function WorkForm() {
   const [customers, setCustomers] = useState();
 
   useEffect(() => {
-    fetch("/api/serviceName")
+    fetch(`${process.env.HOST_URL}/api/serviceName`)
       .then((res) => res.json())
       .then((data) => {
         setServiceNames(data);
@@ -29,7 +29,7 @@ export default function WorkForm() {
   }, []);
 
   useEffect(() => {
-    fetch("/api/customer")
+    fetch(`${process.env.HOST_URL}/api/customer`)
       .then((res) => res.json())
       .then((data) => {
         setCustomers(data);
@@ -65,7 +65,7 @@ export default function WorkForm() {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch("/api/service/new", {
+      const response = await fetch(`${process.env.HOST_URL}/api/service/new`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

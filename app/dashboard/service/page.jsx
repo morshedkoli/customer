@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/table";
 
 export default async function Page() {
-  let data = await fetch("http://localhost:3000/api/serviceName");
+  let data = await fetch(`${process.env.HOST_URL}/api/serviceName`);
   let serviceName = await data.json();
   return (
     <DashboardLayout>
