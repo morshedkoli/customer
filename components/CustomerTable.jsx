@@ -12,13 +12,14 @@ export default function CustomerTable() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(`/api/customer`);
+      const response = await fetch(`/api/customer`); // Relative path
       if (!response.ok) {
         throw new Error(`Failed to fetch users: ${response.statusText}`);
       }
       const data = await response.json();
       setUsers(data);
     } catch (err) {
+      console.error("Fetch Error:", err); // Log error for debugging
       setError(err.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
