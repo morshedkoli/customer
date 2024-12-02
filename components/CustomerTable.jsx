@@ -12,24 +12,19 @@ export default function CustomerTable() {
       setLoading(true);
       setError("");
 
-      // Ensure the fetch only happens in the browser environment
-      const response = await fetch(`/api/customer`);
+      const response = await fetch(`/api/customer`); // Relative path ensures no environment variables are needed
       if (!response.ok) {
-        throw new Error("Failed to fetch users.");
+        throw new Error(`Failed to fetch users: ${response.statusText}`);
       }
       const data = await response.json();
       setUsers(data);
     } catch (err) {
-      setError(
-        err.message ||
-          "Unable to connect to the server. Please try again later."
-      );
+      setError(err.message || "An unexpected error occurred.");
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch users only after the component is mounted
   useEffect(() => {
     fetchUsers();
   }, []);
