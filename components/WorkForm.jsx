@@ -15,32 +15,37 @@ export default function WorkForm() {
   });
 
   const [isLoading, setLoading] = useState(true);
-
-  const [serviceNames, setServiceNames] = useState();
-  const [customers, setCustomers] = useState();
-
-  useEffect(() => {
-    fetch(`${process.env.HOST_URL}/api/serviceName`)
-      .then((res) => res.json())
-      .then((data) => {
-        setServiceNames(data);
-        setLoading(false);
-      });
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.HOST_URL}/api/customer`)
-      .then((res) => res.json())
-      .then((data) => {
-        setCustomers(data);
-        setLoading(false);
-      });
-  }, []);
-
+  const [serviceNames, setServiceNames] = useState([]);
+  const [customers, setCustomers] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({});
 
+  // Fetch Service Names and Customers
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [serviceResponse, customerResponse] = await Promise.all([
+          fetch(`${process.env.HOST_URL}/api/serviceName`),
+          fetch(`${process.env.HOST_URL}/api/customer`),
+        ]);
+        const serviceData = await serviceResponse.json();
+        const customerData = await customerResponse.json();
+
+        setServiceNames(serviceData);
+        setCustomers(customerData);
+        setLoading(false); // Only set loading to false once both data are fetched
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setErrorMessage("Failed to load data");
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -49,16 +54,25 @@ export default function WorkForm() {
     }));
   };
 
+  // Validate form inputs
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.cost) newErrors.cost = "cost is required";
-    if (!formData.deliveryDate) newErrors.deliveryDate = "Delivery is required";
+    if (!formData.serviceNameId)
+      newErrors.serviceNameId = "Service name is required";
+    if (!formData.customerId) newErrors.customerId = "Customer is required";
+    if (!formData.name) newErrors.name = "Name is required";
+    if (!formData.cost) newErrors.cost = "Cost is required";
+    if (isNaN(formData.cost)) newErrors.cost = "Cost must be a number";
+    if (!formData.deliveryDate)
+      newErrors.deliveryDate = "Delivery date is required";
+    if (!formData.status) newErrors.status = "Status is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -74,7 +88,7 @@ export default function WorkForm() {
       const data = await response.json();
 
       if (response.ok) {
-        setSuccessMessage(data.message);
+        setSuccessMessage(data.message || "Successfully added work request");
         setErrorMessage("");
         setFormData({
           serviceNameId: "",
@@ -82,47 +96,44 @@ export default function WorkForm() {
           customerId: "",
           deliveryDate: "",
           status: "",
-          birthDate: "",
           name: "",
+          birthDate: "",
           ref: "",
         });
       } else {
-        setErrorMessage(data.message);
+        setErrorMessage(data.message || "Failed to add work request");
         setSuccessMessage("");
       }
     } catch (error) {
-      console.log("error", error);
-      setErrorMessage("Failed to Add");
+      console.log("Error:", error);
+      setErrorMessage("Failed to add work request");
       setSuccessMessage("");
     }
   };
-  if (isLoading) return <p>Loading...</p>;
+
+  if (isLoading) return <p>Loading...</p>; // Loading indicator
 
   return (
     <div className="max-w-md mx-auto mt-10">
       <h2 className="text-2xl font-bold mb-5">Register New Work Request</h2>
+
       {successMessage && <p className="text-green-600">{successMessage}</p>}
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+
       <form onSubmit={handleSubmit} className="space-y-4">
+        {/* Service Name Field */}
         <div>
-          <label>service Name</label>
-          {/* <input
-            type="text"
+          <label>Service Name</label>
+          <select
             name="serviceNameId"
             value={formData.serviceNameId}
             onChange={handleChange}
             className="w-full p-2 border rounded"
-          /> */}
-          <select
-            name="serviceNameId"
-            id="serviceNameId"
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
           >
-            <option>Select a Service</option>
+            <option value="">Select a Service</option>
             {serviceNames?.map((serviceName) => (
               <option key={serviceName.id} value={serviceName.id}>
-                {serviceName.name}{" "}
+                {serviceName.name}
               </option>
             ))}
           </select>
@@ -131,22 +142,16 @@ export default function WorkForm() {
           )}
         </div>
 
+        {/* Customer Name Field */}
         <div>
           <label>Customer Name</label>
-          {/* <input
-            type="text"
-            name="serviceNameId"
-            value={formData.serviceNameId}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          /> */}
           <select
             name="customerId"
-            id="customerId"
+            value={formData.customerId}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           >
-            <option>Select a Customer</option>
+            <option value="">Select a Customer</option>
             {customers?.map((customer) => (
               <option key={customer.id} value={customer.id}>
                 {customer.name}
@@ -158,6 +163,7 @@ export default function WorkForm() {
           )}
         </div>
 
+        {/* Name Field */}
         <div>
           <label>Name</label>
           <input
@@ -170,6 +176,20 @@ export default function WorkForm() {
           {errors.name && <p className="text-red-600">{errors.name}</p>}
         </div>
 
+        {/* Cost Field */}
+        <div>
+          <label>Cost</label>
+          <input
+            type="text"
+            name="cost"
+            value={formData.cost}
+            onChange={handleChange}
+            className="w-full p-2 border rounded"
+          />
+          {errors.cost && <p className="text-red-600">{errors.cost}</p>}
+        </div>
+
+        {/* Birth Date Field */}
         <div>
           <label>Birth Date</label>
           <input
@@ -184,42 +204,32 @@ export default function WorkForm() {
           )}
         </div>
 
+        {/* Reference Field */}
         <div>
           <label>Reference</label>
           <input
             type="text"
             name="ref"
             value={formData.ref}
-            // defaultValue="nothing"
             onChange={handleChange}
             className="w-full p-2 border rounded"
           />
           {errors.ref && <p className="text-red-600">{errors.ref}</p>}
         </div>
 
-        <div>
-          <label>Cost</label>
-          <input
-            type="text"
-            name="cost"
-            value={formData.cost}
-            onChange={handleChange}
-            className="w-full p-2 border rounded"
-          />
-          {errors.cost && <p className="text-red-600">{errors.cost}</p>}
-        </div>
+        {/* Status Field */}
         <div>
           <label>Status</label>
-
           <select
             name="status"
+            value={formData.status}
             onChange={handleChange}
             className="w-full p-2 border rounded"
           >
-            <option>Select a Status </option>
+            <option value="">Select a Status</option>
             <option value="Agreement">Agreement</option>
             <option value="Submitted">Submitted</option>
-            <option value=" Finger_Done"> Finger Done</option>
+            <option value="Finger_Done">Finger Done</option>
             <option value="Police_Report_Done">Police Report Done</option>
             <option value="BackEnd_Verification_Done">
               BackEnd Verification Done
@@ -232,6 +242,7 @@ export default function WorkForm() {
           {errors.status && <p className="text-red-600">{errors.status}</p>}
         </div>
 
+        {/* Delivery Date Field */}
         <div>
           <label>Delivery Date</label>
           <input
@@ -246,6 +257,7 @@ export default function WorkForm() {
           )}
         </div>
 
+        {/* Submit Button */}
         <button
           type="submit"
           className="w-full bg-blue-600 text-white p-2 rounded"

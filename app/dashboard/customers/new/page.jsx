@@ -10,7 +10,7 @@ export default function Page() {
         mainbread="Dashboard"
         subbread="Customer"
       />
-      <div className="container mx-auto">
+      <div className="container mx-auto px-4 py-6">
         <RegisterForm />
       </div>
     </DashboardLayout>

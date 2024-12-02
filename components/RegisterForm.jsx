@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -24,10 +25,10 @@ export default function RegisterForm() {
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.name) newErrors.name = "Name is required";
+    if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.phone || !/^\d{10,15}$/.test(formData.phone))
       newErrors.phone = "Phone number must be 10-15 digits";
-    if (!formData.address) newErrors.address = "Address is required";
+    if (!formData.address.trim()) newErrors.address = "Address is required";
     if (isNaN(formData.balance) || formData.balance < 0)
       newErrors.balance = "Balance must be a positive number";
 
@@ -41,7 +42,10 @@ export default function RegisterForm() {
     if (!validateForm()) return;
 
     try {
-      const response = await fetch(`${process.env.HOST_URL}/api/customer/new`, {
+      setErrorMessage("");
+      setSuccessMessage("");
+
+      const response = await fetch(`/api/customer/new`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -49,17 +53,15 @@ export default function RegisterForm() {
 
       const data = await response.json();
 
-      if (response?.ok) {
-        setSuccessMessage(data.message || "error");
-        setErrorMessage("");
+      if (response.ok) {
+        setSuccessMessage(data.message || "Customer registered successfully.");
         setFormData({ name: "", phone: "", address: "", balance: 0 });
       } else {
-        setErrorMessage(data.message || "error");
-        setSuccessMessage("");
+        setErrorMessage(data.message || "Failed to register customer.");
       }
     } catch (error) {
-      setErrorMessage("Failed to register");
-      setSuccessMessage("");
+      console.error("Fetch error:", error);
+      setErrorMessage("Failed to connect to the server.");
     }
   };
 
@@ -68,9 +70,10 @@ export default function RegisterForm() {
       <h2 className="text-2xl font-bold mb-5">Register Customer</h2>
       {successMessage && <p className="text-green-600">{successMessage}</p>}
       {errorMessage && <p className="text-red-600">{errorMessage}</p>}
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label>Name</label>
+          <label className="block font-medium mb-1">Name</label>
           <input
             type="text"
             name="name"
@@ -82,7 +85,7 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label>Phone</label>
+          <label className="block font-medium mb-1">Phone</label>
           <input
             type="text"
             name="phone"
@@ -94,7 +97,7 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label>Address</label>
+          <label className="block font-medium mb-1">Address</label>
           <textarea
             name="address"
             value={formData.address}
@@ -105,9 +108,9 @@ export default function RegisterForm() {
         </div>
 
         <div>
-          <label>Balance</label>
+          <label className="block font-medium mb-1">Balance</label>
           <input
-            type="text"
+            type="number"
             name="balance"
             value={formData.balance}
             onChange={handleChange}
@@ -118,7 +121,7 @@ export default function RegisterForm() {
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white p-2 rounded"
+          className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
         >
           Register
         </button>

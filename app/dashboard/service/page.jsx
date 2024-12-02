@@ -13,9 +13,27 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+// Use a relative path for the API endpoint
+async function fetchServices() {
+  try {
+    const response = await fetch(`${process.env.HOST_URL}/api/serviceName`, {
+      next: { revalidate: 10 }, // Add caching for better SSR performance
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch services: ${response.statusText}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error.message);
+    return [];
+  }
+}
+
 export default async function Page() {
-  let data = await fetch(`${process.env.HOST_URL}/api/serviceName`);
-  let serviceName = await data.json();
+  const serviceName = await fetchServices();
+
   return (
     <DashboardLayout>
       <BreadcrumbDashboard
@@ -36,11 +54,19 @@ export default async function Page() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {serviceName.map((service) => (
-                <TableRow key={service.id}>
-                  <TableCell className="font-bold">{service.name}</TableCell>
+              {serviceName.length > 0 ? (
+                serviceName.map((service) => (
+                  <TableRow key={service.id}>
+                    <TableCell className="font-bold">{service.name}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={1} className="text-center">
+                    No services available
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>
