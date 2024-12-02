@@ -12,6 +12,7 @@ export default function CustomerTable() {
       setLoading(true);
       setError("");
 
+      // Ensure the fetch only happens in the browser environment
       const response = await fetch(`/api/customer`);
       if (!response.ok) {
         throw new Error("Failed to fetch users.");
@@ -28,6 +29,7 @@ export default function CustomerTable() {
     }
   };
 
+  // Fetch users only after the component is mounted
   useEffect(() => {
     fetchUsers();
   }, []);
