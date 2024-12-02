@@ -2,6 +2,13 @@
 
 import { useState } from "react";
 
+import dynamic from "next/dynamic";
+
+const DynamicComponentWithNoSSR = dynamic(
+  () => import("../components/BrowserOnlyComponent"),
+  { ssr: false }
+);
+
 export default function RegisterForm() {
   const [formData, setFormData] = useState({
     name: "",
