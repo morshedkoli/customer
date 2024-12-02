@@ -12,7 +12,7 @@ export default function CustomerTable() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(`/api/customer`); // Relative path ensures no environment variables are needed
+      const response = await fetch(`/api/customer`);
       if (!response.ok) {
         throw new Error(`Failed to fetch users: ${response.statusText}`);
       }
@@ -54,7 +54,7 @@ export default function CustomerTable() {
             <th className="border p-2">Address</th>
             <th className="border p-2">Phone Number</th>
             <th className="border p-2">Total Services</th>
-            <th className="border p-2">Total Payment Time</th>
+            <th className="border p-2">Total Payment Times</th>
             <th className="border p-2">Total Cost Of Services</th>
             <th className="border p-2">Total Paid Amount</th>
             <th className="border p-2">Due Balance</th>
@@ -75,7 +75,7 @@ export default function CustomerTable() {
               <td className="border p-2">
                 {user.services
                   ? user.services.reduce(
-                      (sum, service) => sum + service.cost,
+                      (sum, service) => sum + (service.cost || 0),
                       0
                     )
                   : 0}
@@ -83,7 +83,7 @@ export default function CustomerTable() {
               <td className="border p-2">
                 {user.paidHistories
                   ? user.paidHistories.reduce(
-                      (sum, paid) => sum + paid.amount,
+                      (sum, payment) => sum + (payment.amount || 0),
                       0
                     )
                   : 0}
