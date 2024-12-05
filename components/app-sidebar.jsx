@@ -28,7 +28,6 @@ import {
   SidebarMenuSubButton,
 } from "@/components/ui/sidebar";
 import { Button } from "./ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import UserItem from "./athenticated/UserItem";
 import LogoutButton from "./athenticated/LogoutButton";
 

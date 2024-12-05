@@ -16,9 +16,7 @@ import {
 // Use a relative path for the API endpoint
 async function fetchServices() {
   try {
-    const response = await fetch(`${process.env.HOST_URL}/api/serviceName`, {
-      next: { revalidate: 10 }, // Add caching for better SSR performance
-    });
+    const response = await fetch(process.env.HOST_URL + "/api/serviceName", {});
 
     if (!response.ok) {
       throw new Error(`Failed to fetch services: ${response.statusText}`);

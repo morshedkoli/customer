@@ -9,7 +9,7 @@ import {
 import { format } from "date-fns";
 
 export async function ServiceTable() {
-  let data = await fetch(`${process.env.HOST_URL}/api/service`);
+  let data = await fetch(process.env.HOST_URL + "/api/service");
   let jobs = await data.json();
   return (
     <div className="p-10 border rounded-md">
@@ -28,24 +28,28 @@ export async function ServiceTable() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {jobs?.map((job) => (
-            <TableRow key={job.id}>
-              <TableCell className="font-medium">
-                {job?.serviceName.name}
-              </TableCell>
-              <TableCell>{job?.name}</TableCell>
-              <TableCell>{job?.status}</TableCell>
-              <TableCell>
-                {format(new Date(job.birthDate), "dd-MM-yyyy")}
-              </TableCell>
-              <TableCell>{job?.ref}</TableCell>
-              <TableCell>
-                {format(new Date(job.deliveryDate), "dd-MM-yyyy")}
-              </TableCell>
-              <TableCell>{job?.customer.name}</TableCell>
-              <TableCell className="text-right">{job?.cost}</TableCell>
-            </TableRow>
-          ))}
+          {!jobs ? (
+            <h1>Loading Data</h1>
+          ) : (
+            jobs?.map((job) => (
+              <TableRow key={job.id}>
+                <TableCell className="font-medium">
+                  {job?.serviceName.name}
+                </TableCell>
+                <TableCell>{job?.name}</TableCell>
+                <TableCell>{job?.status}</TableCell>
+                <TableCell>
+                  {format(new Date(job.birthDate), "dd-MM-yyyy")}
+                </TableCell>
+                <TableCell>{job?.ref}</TableCell>
+                <TableCell>
+                  {format(new Date(job.deliveryDate), "dd-MM-yyyy")}
+                </TableCell>
+                <TableCell>{job?.customer.name}</TableCell>
+                <TableCell className="text-right">{job?.cost}</TableCell>
+              </TableRow>
+            ))
+          )}
         </TableBody>
         {/* <TableFooter>
           <TableRow>

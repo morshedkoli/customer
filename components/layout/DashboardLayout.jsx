@@ -1,15 +1,5 @@
 import { AppSidebar } from "../app-sidebar";
-import NavbarDashboard from "../NavbarDashboard";
-import { SidebarInset, SidebarProvider, SidebarTrigger } from "../ui/sidebar";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import { Separator } from "@/components/ui/separator";
+import { SidebarInset, SidebarProvider } from "../ui/sidebar";
 
 export default function DashboardLayout({ children }) {
   return (

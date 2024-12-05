@@ -8,6 +8,7 @@ export default function Home() {
       <div className="flex justify-center">
         <div className="container">
           <div className="flex flex-wrap justify-between">
+            <h2>{process.env.HOST_URL}</h2>
             <SingleSite />
             <SingleSite />
             <SingleSite />

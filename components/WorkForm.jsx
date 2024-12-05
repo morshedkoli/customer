@@ -21,29 +21,29 @@ export default function WorkForm() {
   const [errorMessage, setErrorMessage] = useState("");
   const [errors, setErrors] = useState({});
 
-  // Fetch Service Names and Customers
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [serviceResponse, customerResponse] = await Promise.all([
-          fetch(`${process.env.HOST_URL}/api/serviceName`),
-          fetch(`${process.env.HOST_URL}/api/customer`),
-        ]);
-        const serviceData = await serviceResponse.json();
-        const customerData = await customerResponse.json();
+  // // Fetch Service Names and Customers
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const [serviceResponse, customerResponse] = await Promise.all([
+  //         fetch(`${process.env.HOST_URL}/api/serviceName`),
+  //         fetch(`${process.env.HOST_URL}/api/customer`),
+  //       ]);
+  //       const serviceData = await serviceResponse.json();
+  //       const customerData = await customerResponse.json();
 
-        setServiceNames(serviceData);
-        setCustomers(customerData);
-        setLoading(false); // Only set loading to false once both data are fetched
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setErrorMessage("Failed to load data");
-        setLoading(false);
-      }
-    };
+  //       setServiceNames(serviceData);
+  //       setCustomers(customerData);
+  //       setLoading(false); // Only set loading to false once both data are fetched
+  //     } catch (error) {
+  //       console.error("Error fetching data:", error);
+  //       setErrorMessage("Failed to load data");
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -55,60 +55,62 @@ export default function WorkForm() {
   };
 
   // Validate form inputs
-  const validateForm = () => {
-    const newErrors = {};
+  // const validateForm = () => {
+  //   const newErrors = {};
 
-    if (!formData.serviceNameId)
-      newErrors.serviceNameId = "Service name is required";
-    if (!formData.customerId) newErrors.customerId = "Customer is required";
-    if (!formData.name) newErrors.name = "Name is required";
-    if (!formData.cost) newErrors.cost = "Cost is required";
-    if (isNaN(formData.cost)) newErrors.cost = "Cost must be a number";
-    if (!formData.deliveryDate)
-      newErrors.deliveryDate = "Delivery date is required";
-    if (!formData.status) newErrors.status = "Status is required";
+  //   if (!formData.serviceNameId)
+  //     newErrors.serviceNameId = "Service name is required";
+  //   if (!formData.customerId) newErrors.customerId = "Customer is required";
+  //   if (!formData.name) newErrors.name = "Name is required";
+  //   if (!formData.cost) newErrors.cost = "Cost is required";
+  //   if (isNaN(formData.cost)) newErrors.cost = "Cost must be a number";
+  //   if (!formData.deliveryDate)
+  //     newErrors.deliveryDate = "Delivery date is required";
+  //   if (!formData.status) newErrors.status = "Status is required";
 
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  //   setErrors(newErrors);
+  //   return Object.keys(newErrors).length === 0;
+  // };
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!validateForm()) return;
+    // if (!validateForm()) return;
+    console.log("data submited");
+    // try {
+    //   const response = await fetch(`http://localhost:3000/api/service/new`, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(formData),
+    //   });
 
-    try {
-      const response = await fetch(`${process.env.HOST_URL}/api/service/new`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+    //   if (!response.ok) {
+    //     // Handle non-200 responses without parsing JSON
+    //     setErrorMessage(`Error: ${response.status} ${response.statusText}`);
+    //     setSuccessMessage("");
+    //     return;
+    //   }
 
-      const data = await response.json();
+    //   const data = await response.json();
 
-      if (response.ok) {
-        setSuccessMessage(data.message || "Successfully added work request");
-        setErrorMessage("");
-        setFormData({
-          serviceNameId: "",
-          cost: "",
-          customerId: "",
-          deliveryDate: "",
-          status: "",
-          name: "",
-          birthDate: "",
-          ref: "",
-        });
-      } else {
-        setErrorMessage(data.message || "Failed to add work request");
-        setSuccessMessage("");
-      }
-    } catch (error) {
-      console.log("Error:", error);
-      setErrorMessage("Failed to add work request");
-      setSuccessMessage("");
-    }
+    //   setSuccessMessage(data.message || "Successfully added work request");
+    //   setErrorMessage("");
+    //   setFormData({
+    //     serviceNameId: "",
+    //     cost: "",
+    //     customerId: "",
+    //     deliveryDate: "",
+    //     status: "",
+    //     name: "",
+    //     birthDate: "",
+    //     ref: "",
+    //   });
+    // } catch (error) {
+    //   console.log("Error:", error);
+    //   setErrorMessage("Failed to add work request");
+    //   setSuccessMessage("");
+    // }
   };
 
   if (isLoading) return <p>Loading...</p>; // Loading indicator

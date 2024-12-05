@@ -12,7 +12,7 @@ export default function CustomerTable() {
       setLoading(true);
       setError("");
 
-      const response = await fetch(`/api/customer`); // Relative path
+      const response = await fetch(`http://localhost:3000/api/customer`); // Relative path
       if (!response.ok) {
         throw new Error(`Failed to fetch users: ${response.statusText}`);
       }

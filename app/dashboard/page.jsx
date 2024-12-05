@@ -11,6 +11,7 @@ export default function Page() {
       <BreadcrumbDashboard mainbread="Dashboard" subbread=" " />
       <div className="pt-10">
         <Statistics />
+        <h1>{process.env.HOST_URL}</h1>
         <DashboardButton />
         <div className="hidden md:flex w-full">
           <div className=" md:w-2/3 p-4">

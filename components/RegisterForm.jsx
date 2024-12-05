@@ -40,28 +40,42 @@ export default function RegisterForm() {
     e.preventDefault();
 
     if (!validateForm()) return;
-
+    console.log("data submited");
     try {
+      // Clear previous messages
       setErrorMessage("");
       setSuccessMessage("");
 
-      const response = await fetch(`/api/customer/new`, {
+      const response = await fetch(process.env.HOST_URL + "/api/customer/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        setSuccessMessage(data.message || "Customer registered successfully.");
-        setFormData({ name: "", phone: "", address: "", balance: 0 });
-      } else {
-        setErrorMessage(data.message || "Failed to register customer.");
+      // Check for network or server-level issues
+      if (!response.ok) {
+        // Attempt to parse JSON if the response body contains error details
+        let errorData = {};
+        try {
+          errorData = await response.json();
+        } catch {
+          // If JSON parsing fails, provide a generic error message
+          errorData.message = "An unexpected error occurred.";
+        }
+        setErrorMessage(errorData.message || `Error: ${response.statusText}`);
+        return;
       }
+
+      // Parse JSON and handle success
+      const data = await response.json();
+      setSuccessMessage(data.message || "Customer registered successfully.");
+      setFormData({ name: "", phone: "", address: "", balance: 0 });
     } catch (error) {
+      // Handle fetch errors (e.g., network issues, CORS errors)
       console.error("Fetch error:", error);
-      setErrorMessage("Failed to connect to the server.");
+      setErrorMessage(
+        "Failed to connect to the server. Please try again later."
+      );
     }
   };
 
